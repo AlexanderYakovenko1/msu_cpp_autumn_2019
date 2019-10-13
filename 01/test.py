@@ -26,7 +26,7 @@ def test(executable, arg, out):
         else:
             print('TEST {:s} "{:s}" FAILED: Expected output {:s} got {:s}'\
                   .format(executable, arg, out.strip(), instance.stdout.strip().decode()))
-            return 1
+            return 0
 
 def main():
     if len(sys.argv) != 3:

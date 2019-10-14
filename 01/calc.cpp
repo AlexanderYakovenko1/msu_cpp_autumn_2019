@@ -46,11 +46,12 @@ int mult_div(std::istringstream &stream, int &ch)
     }
 }
 
-int eval(const std::string &str, int &ch)
+int eval(const std::string &str)
 {
     std::istringstream stream(str);
-    get_char(stream, ch);
+    int ch;
 
+    get_char(stream, ch);
     int init = mult_div(stream, ch);
 
     while (ch != EOF) {
@@ -61,8 +62,11 @@ int eval(const std::string &str, int &ch)
             get_char(stream, ch);
             init -= mult_div(stream, ch);
         } else {
-            return init;
+            break;
         }
+    }
+    if (ch != EOF) {
+        throw std::invalid_argument("Unexpected character");
     }
     return init;
 }
@@ -70,17 +74,13 @@ int eval(const std::string &str, int &ch)
 int main(int argc, char const *argv[])
 {
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << "\"expression\"" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " \"expression\"" << std::endl;
         return 1;
     }
 
-    int ch = 0;
     int res = 0;
     try {
-        res = eval(argv[1], ch);
-        if (ch != EOF) {
-            throw std::invalid_argument("Unexpected character");
-        }
+        res = eval(argv[1]);
     } catch (std::exception &exc) {
         std::cerr << exc.what() << std::endl;
         return 1;

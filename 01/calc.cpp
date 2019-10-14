@@ -75,14 +75,12 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    int res = 0;
     try {
-        res = eval(argv[1]);
+        std::cout << eval(argv[1]) << std::endl;
     } catch (std::exception &exc) {
         std::cerr << exc.what() << std::endl;
         return 1;
     }
-    std::cout << res << std::endl;
 
     return 0;
 }

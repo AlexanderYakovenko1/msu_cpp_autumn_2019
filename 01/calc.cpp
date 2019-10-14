@@ -62,11 +62,8 @@ int eval(const std::string &str)
             get_char(stream, ch);
             init -= mult_div(stream, ch);
         } else {
-            break;
+            throw std::invalid_argument("Unexpected character");
         }
-    }
-    if (ch != EOF) {
-        throw std::invalid_argument("Unexpected character");
     }
     return init;
 }

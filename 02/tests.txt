@@ -1,0 +1,2 @@
+100:10 15 30 40 50, ptr ptr ptr ptr nullptr
+3:40 r 2, nullptr r ptr

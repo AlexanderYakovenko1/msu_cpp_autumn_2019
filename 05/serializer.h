@@ -69,7 +69,7 @@ public:
         return object.serialize(*this);
     }
 
-    template <class... ArgsT>
+    template <class ...ArgsT>
     Error operator()(ArgsT &&...args)
     {
         return process(std::forward<ArgsT>(args)...);

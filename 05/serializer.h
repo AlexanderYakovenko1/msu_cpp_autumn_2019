@@ -2,6 +2,7 @@
 #define SERIALIZER_H
 
 #include <iostream>
+#include <algorithm>
 #include <utility>
 
 enum class Error
@@ -19,15 +20,15 @@ public:
     explicit Serializer(std::ostream &out) : out_(out) {}
 
     template <class T>
-    Error save(T& object)
+    Error save(T &object)
     {
         return object.serialize(*this);
     }
 
-    template <class... ArgsT>
-    Error operator()(ArgsT... args)
+    template <class ...ArgsT>
+    Error operator()(ArgsT &&...args)
     {
-        return process(args...);
+        return process(std::forward<ArgsT>(args)...);
     }
     
 private:
@@ -41,13 +42,13 @@ private:
         }
     }
 
-    Error process(uint64_t &value)
+    Error process(uint64_t value)
     {
         out_ << value << Separator;
         return Error::NoError;
     }
 
-    Error process(bool &value)
+    Error process(bool value)
     {
         out_ << (value ? "true" : "false") << Separator;
         return Error::NoError;
@@ -63,7 +64,7 @@ public:
     explicit Deserializer(std::istream &in) : in_(in) {}
 
     template <class T>
-    Error load(T& object)
+    Error load(T &object)
     {
         return object.serialize(*this);
     }
@@ -89,11 +90,11 @@ private:
     {
         std::string buf;
         in_ >> buf;
-        try {
-            value = std::stoull(buf);
-        } catch (...) {
+        if (buf.empty() ||
+            std::find_if(buf.begin(), buf.end(), [](char c) { return !std::isdigit(c); }) != buf.end()) {
             return Error::CorruptedArchive;
         }
+        value = std::stoull(buf);
         return Error::NoError;
     }
 

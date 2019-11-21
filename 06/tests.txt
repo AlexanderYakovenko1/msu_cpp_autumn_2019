@@ -1,0 +1,8 @@
+1, 
+2, 1 + 1 = 2
+3, 1+9=B
+4, Formatting argument out of bounds
+5, Non number characters in bracket sequence
+6, Found '}' but '{' is missing
+7, 0*one*2*ten
+8, Found '{' but '}' is missing
